@@ -7,53 +7,59 @@ import io
 # estilos globales
 st.markdown("""
 <style>
-/* fuente gilroy */
 @font-face {
     font-family: 'Gilroy';
     src: url('https://raw.githubusercontent.com/majoocharteKellanova/oc-to-transit/main/assets/gilroy-medium.ttf');
 }
 
-/* fondo general */
-html, body, [class*="block-container"] {
-    background-color: #e2003e;
+/* fondo degradado vino -> rojo */
+html, body, [data-testid="stAppViewContainer"], [class*="block-container"] {
+    background: linear-gradient(180deg, #7A1531 0%, #E2003E 100%) !important;
+    color-scheme: light !important;
+}
+
+/* fuente global y texto negro */
+*, div, span, section, button, label, input, textarea, h1, h2, h3, p {
     font-family: 'Gilroy', sans-serif !important;
+    color: #000000 !important;
 }
 
-/* --- TARJETA CENTRAL --- */
-div[data-testid="stAppViewContainer"] > .main {
-    display: flex;
-    justify-content: center;
-}
-
+/* tarjeta blanca centrada */
 div[data-testid="stVerticalBlock"] {
-    background-color: #ffffff; /* blanco dentro de la tarjeta */
+    background-color: #ffffff;
     border-radius: 20px;
     padding: 3rem 5rem;
     margin-top: 3rem;
     margin-bottom: 3rem;
-    box-shadow: 0px 4px 20px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 24px rgba(0,0,0,0.25);
     width: 80%;
     max-width: 800px;
 }
 
-/* título */
-h1 {
-    color: #9E0B45;
-    text-align: center;
-    padding-bottom: 0.8em;
-    font-weight: bold;
+/* centrado total */
+section[data-testid="stSidebar"] ~ div[data-testid="stAppViewContainer"] > .main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
+
+/* título */
+h1, h1 span, [data-testid="stMarkdownContainer"] h1 {
+    color: #7A1531 !important;       /* vino */
+    text-align: center !important;
+    padding-bottom: 0.8em !important;
+    font-weight: 800 !important;     /* más bold */
+    font-size: 2.8rem !important;    /* más grande */
+    letter-spacing: 1px !important;  /* espaciamiento */
+    text-transform: none !important; /* o "uppercase" si lo quieres en mayúsculas */
+}
+
 
 /* subtítulos */
 h2, h3 {
-    color: #7A1531;
+    color: #7A1531 !important;
     text-align: center;
-}
-
-/* texto del cuerpo */
-p, label, span {
-    color: #000000;
-    font-size: 1rem;
 }
 
 /* uploader */
@@ -68,12 +74,12 @@ div[data-testid="stFileUploaderDropzone"]:hover {
     background-color: #edf0ff !important;
 }
 
-/* texto del uploader */
+/* texto uploader */
 div[data-testid="stFileUploaderDropzone"] p {
     color: #3d5ee8 !important;
 }
 
-/* botón "Browse files" */
+/* botón de subida */
 div[data-testid="stFileUploader"] section div div button {
     background-color: #3d5ee8 !important;
     color: white !important;
@@ -91,17 +97,17 @@ div[data-testid="stFileUploader"] section div div button:hover {
 
 /* botones generales */
 button[data-testid="baseButton-primary"], button[kind="primary"] {
-    background-color: #3d5ee8;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-weight: bold;
-    padding: 0.6em 1.4em;
+    background-color: #3d5ee8 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: bold !important;
+    padding: 0.6em 1.4em !important;
     box-shadow: 0px 3px 6px rgba(0,0,0,0.2);
     transition: 0.3s;
 }
 button[data-testid="baseButton-primary"]:hover, button[kind="primary"]:hover {
-    background-color: #2b48c0;
+    background-color: #2b48c0 !important;
     transform: scale(1.03);
 }
 
@@ -116,23 +122,33 @@ img {
     width: 120px;
     margin-bottom: 1em;
 }
-            
-/* centrado total de la tarjeta principal */
-section[data-testid="stSidebar"] ~ div[data-testid="stAppViewContainer"] > .main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh; /* ocupa toda la altura */
-}
 
-/* evita que el contenido se pegue a los bordes */
-div[data-testid="stVerticalBlock"] {
-    margin: auto !important;
+/* footer */
+footer {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #ffffff;
+    margin-top: 2rem;
+    opacity: 0.8;
+}
+            
+/* fuerza el estilo del título de Streamlit */
+[data-testid="stMarkdownContainer"] h1,
+[data-testid="stMarkdownContainer"] p strong,
+[data-testid="stMarkdownContainer"] p span,
+h1, h1 span {
+    color: #7A1531 !important;       /* vino */
+    text-align: center !important;
+    font-family: 'Gilroy', sans-serif !important;
+    font-weight: 1200 !important;     /* aún más bold */
+    font-size: 2.8rem !important;    /* más grande */
+    letter-spacing: 1px !important;
+    text-transform: uppercase !important;
+    line-height: 1.2 !important;
 }
 
 </style>
 """, unsafe_allow_html=True)
-
 
 
 st.image(
@@ -141,7 +157,7 @@ st.image(
 )
 
 # título de la app
-st.markdown("<h1> consolidador de órdenes kellanover</h1>", unsafe_allow_html=True)
+st.markdown("<h1> consolidador de ordenes kellanover</h1>", unsafe_allow_html=True)
 
 st.write("---")
 
@@ -195,4 +211,11 @@ if archivos: # una lista vacía se considera False y una con elementos es True, 
 
 else:
     st.info("sube al menos un archivo .xlsx para comenzar")
+
+# footer visible
+st.markdown(
+    "<footer> hecho por majo ocharte :)</footer>",
+    unsafe_allow_html=True
+)
+
 
