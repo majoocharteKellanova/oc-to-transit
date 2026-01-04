@@ -187,9 +187,13 @@ if archivos: # una lista vacía se considera False y una con elementos es True, 
         df_total,
         id_vars=["No. Orden", "Código de Barras", "SKU", "Descripción", "U. por CasePack"],
         value_vars=cols_tienda,
-        var_name="ID_Tienda",
+        var_name="No. Tienda",
         value_name="Total"
     )
+    # más cambios
+    df['No. Tienda'] = df['No. Tienda'].str.replace('Tienda', '')
+    df['ID'] = df['No. Tienda'] + df['Código de Barras'].astype(str)
+    df.insert(0, 'ID', df.pop('ID))
 
     # mostrar preview del dataframe
     st.markdown("<h3 style='color:#F7C844;'>vista previa del consolidado:</h3>", unsafe_allow_html=True)
