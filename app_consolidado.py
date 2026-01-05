@@ -191,6 +191,7 @@ if archivos: # una lista vacía se considera False y una con elementos es True, 
         value_name="Total"
     )
     # más cambios
+    df = df_largo
     df['No. Tienda'] = df['No. Tienda'].str.replace('Tienda', '')
     df['ID'] = df['No. Tienda'] + df['Código de Barras'].astype(str)
     df.insert(0, 'ID', df.pop('ID'))
