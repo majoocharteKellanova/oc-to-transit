@@ -148,6 +148,7 @@ footer {
 button[data-baseweb="tab"] p {
     font-size: 1.5rem !important; /* ajusta este número a tu gusto */
     font-weight: 700 !important;
+    color: #000000;
 }
             
 </style>
