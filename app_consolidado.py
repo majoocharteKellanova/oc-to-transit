@@ -15,11 +15,10 @@ st.markdown("""
     src: url('https://raw.githubusercontent.com/majoocharteKellanova/oc-to-transit/main/assets/gilroy-medium.ttf');
 }
             
-/* fuente global y texto negro */
+/* fuente global */
 *, div, span, section, button, label, input, textarea, h1, h2, h3, p {
     font-family: 'Gilroy', sans-serif !important;
-    color: #000000 !important;
-}
+    }
 
 /* fondo degradado vino -> rojo */
 html, body, [data-testid="stAppViewContainer"] {
