@@ -202,7 +202,7 @@ with tab1:
             df_total,
             id_vars=["No. Orden", "Código de Barras", "SKU", "Descripción", "U. por CasePack"],
             value_vars=cols_tienda,
-            var_name="ID_Tienda",
+            var_name="No. Tienda",
             value_name="Total"
         )
         
