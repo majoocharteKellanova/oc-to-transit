@@ -2,6 +2,7 @@
 import streamlit as st
 import pandas as pd
 import io
+from datetime import datetime
 
 st.set_page_config(layout="wide")
 
@@ -154,6 +155,16 @@ button[data-baseweb="tab"] p {
 """, unsafe_allow_html=True)
 # endregion
 
+# backend xd
+hoy = datetime.today()
+meses = {
+    1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril",
+    5: "Mayo", 6: "Junio", 7: "Julio", 8: "Agosto",
+    9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre"
+}
+fecha_bonita = f"{hoy.day} de {meses[hoy.month]} {hoy.year}"
+
+
 st.image(
     "https://raw.githubusercontent.com/majoocharteKellanova/oc-to-transit/main/assets/mars_snacking-logo.png",
     width=160
@@ -211,8 +222,9 @@ with tab1:
         df['No. Tienda'] = df['No. Tienda'].str.replace('Tienda', '')
         df['ID'] = df['No. Tienda'] + df['Código de Barras'].astype(str)
         df.insert(0, 'ID', df.pop('ID'))
-        df['No. Tienda'].astype(int)
-        df['Código de Barras'].astype(int)
+        df['No. Tienda'] = df['No. Tienda'].astype(int)
+        df['Código de Barras'] = df['Código de Barras'].astype(int)
+        df['ID'] = df['ID'].astype(int)
 
         # mostrar preview del dataframe
         st.markdown("<h3 style='color:#F7C844;'>vista previa del consolidado:</h3>", unsafe_allow_html=True)
@@ -228,7 +240,7 @@ with tab1:
         st.download_button(
             label=" descargar ⬇️",
             data=output,
-            file_name="Tránsito.xlsx",
+            file_name=f"Tránsito {fecha_bonita}.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
     # endregion
