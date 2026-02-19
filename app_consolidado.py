@@ -150,6 +150,16 @@ button[data-baseweb="tab"] p {
     font-weight: 700 !important;
     color: #000000;
 }
+
+/* texto normal */
+div[data-testid="stMarkdownContainer"] p {
+    color: black !important;
+}
+
+/* texto dentro de st.write() */
+div[data-testid="stMarkdownContainer"] {
+    color: grey !important;
+}
             
 </style>
 """, unsafe_allow_html=True)
