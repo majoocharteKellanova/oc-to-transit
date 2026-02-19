@@ -120,6 +120,7 @@ button[data-testid="baseButton-primary"], button[kind="primary"] {
 }
 button[data-testid="baseButton-primary"]:hover, button[kind="primary"]:hover {
     background-color: #3d5ee8 !important;
+    color: #000000 !important;
     transform: scale(1.03);
 }
 
@@ -158,7 +159,7 @@ div[data-testid="stMarkdownContainer"] p {
 
 /* texto dentro de st.write() */
 div[data-testid="stMarkdownContainer"] {
-    color: grey !important;
+    color: #9b9b9b !important;
 }
             
 </style>
