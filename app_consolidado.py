@@ -18,9 +18,8 @@ st.markdown("""
 /* fuente global */
 *, div, span, section, button, label, input, textarea, h1, h2, h3, p {
     font-family: 'Gilroy', sans-serif !important;
-    color: #000000;
 }
-       
+
 /* fondo degradado vino -> rojo */
 html, body, [data-testid="stAppViewContainer"] {
     background: linear-gradient(180deg, #7A1531 0%, #E2003E 100%);
@@ -63,8 +62,8 @@ h1, h1 span, [data-testid="stMarkdownContainer"] h1 {
     color: #7A1531 !important; 
     text-align: center; 
     font-family: Gilroy, sans-serif; 
-    font-weight: 1000 !important;
-    font-size: 2.9rem; 
+    font-weight: 10000 !important;
+    font-size: 3rem; 
     line-height: 1.2;
     margin-bottom: 20px;'>
 }
@@ -121,7 +120,6 @@ button[data-testid="baseButton-primary"], button[kind="primary"] {
 }
 button[data-testid="baseButton-primary"]:hover, button[kind="primary"]:hover {
     background-color: #3d5ee8 !important;
-    color: #ffffff !important;
     transform: scale(1.03);
 }
 
@@ -150,9 +148,9 @@ footer {
 button[data-baseweb="tab"] p {
     font-size: 1.5rem !important; /* ajusta este número a tu gusto */
     font-weight: 700 !important;
-    color: #000000;
+    color: #000000 !important;
 }
-
+    
 /* texto normal */
 div[data-testid="stMarkdownContainer"] p {
     color: black !important;
@@ -185,7 +183,7 @@ st.image(
 # título de la app
 st.markdown(
     """
-    <h1 style='text-align: center; font-weight: 1000;'>
+    <h1 style='text-align: center; font-size: 2.9rem; font-weight: 10000;'>
     CONSOLIDADOR DE <br> ORDENES DE COMPRA
     </h1>
     """,
