@@ -120,7 +120,7 @@ button[data-testid="baseButton-primary"], button[kind="primary"] {
 }
 button[data-testid="baseButton-primary"]:hover, button[kind="primary"]:hover {
     background-color: #3d5ee8 !important;
-    color: #000000 !important;
+    color: #ffffff !important;
     transform: scale(1.03);
 }
 
