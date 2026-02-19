@@ -224,7 +224,6 @@ with tab1:
         df.insert(0, 'ID', df.pop('ID'))
         df['No. Tienda'] = df['No. Tienda'].astype(int)
         df['Código de Barras'] = df['Código de Barras'].astype(int)
-        df['ID'] = df['ID'].astype(int)
 
         # mostrar preview del dataframe
         st.markdown("<h3 style='color:#F7C844;'>vista previa del consolidado:</h3>", unsafe_allow_html=True)
