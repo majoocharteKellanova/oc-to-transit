@@ -18,14 +18,9 @@ st.markdown("""
 /* fuente global */
 *, div, span, section, button, label, input, textarea, h1, h2, h3, p {
     font-family: 'Gilroy', sans-serif !important;
-}
-    
-/* fuente global */
-*, div, span, section, button, label, input, textarea, p {
-    font-family: 'Gilroy', sans-serif !important;
     color: #000000;
 }
-    
+       
 /* fondo degradado vino -> rojo */
 html, body, [data-testid="stAppViewContainer"] {
     background: linear-gradient(180deg, #7A1531 0%, #E2003E 100%);
