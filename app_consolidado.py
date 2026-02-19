@@ -139,7 +139,7 @@ img {
 footer {
     text-align: center;
     font-size: 0.8rem;
-    color: #ffffff;
+    color: #000000;
     margin-top: 2rem;
     opacity: 0.8;
 }
