@@ -42,6 +42,20 @@ button[aria-selected="true"] {
     color: #7A1531 !important;
     border-bottom: 2px solid #7A1531 !important;
 }
+/* color de las celdas y encabezados de la tabla (Vista previa) */
+[data-testid="stTable"] td, [data-testid="stTable"] th {
+    color: #000000 !important;
+}
+
+/* color del nombre del archivo subido (el que aparece con el icono de clip) */
+[data-testid="stFileUploaderFileName"] {
+    color: #000000 !important;
+}
+
+/* forzar el texto dentro de los widgets de datos */
+div[data-testid="stExpander"] p, div[data-testid="stMarkdownContainer"] p {
+    color: #000000 !important;
+}
 
 /* quitar el padding extra que Streamlit pone arriba por defecto */
 .block-container {
