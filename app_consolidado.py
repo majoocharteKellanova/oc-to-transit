@@ -186,7 +186,7 @@ meses = {
     5: "Mayo", 6: "Junio", 7: "Julio", 8: "Agosto",
     9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre"
 }
-fecha_bonita = f"{hoy.day} de {meses[hoy.month]} {hoy.year}"
+fecha_bonita = f"{hoy.day} de {meses[hoy.month]}"
 
 
 st.image(
