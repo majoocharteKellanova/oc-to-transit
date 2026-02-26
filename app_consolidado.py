@@ -42,20 +42,6 @@ button[aria-selected="true"] {
     color: #7A1531 !important;
     border-bottom: 2px solid #7A1531 !important;
 }
-/* color de las celdas y encabezados de la tabla (Vista previa) */
-[data-testid="stTable"] td, [data-testid="stTable"] th {
-    color: #000000 !important;
-}
-
-/* color del nombre del archivo subido (el que aparece con el icono de clip) */
-[data-testid="stFileUploaderFileName"] {
-    color: #000000 !important;
-}
-
-/* forzar el texto dentro de los widgets de datos */
-div[data-testid="stExpander"] p, div[data-testid="stMarkdownContainer"] p {
-    color: #000000 !important;
-}
 
 /* quitar el padding extra que Streamlit pone arriba por defecto */
 .block-container {
@@ -244,7 +230,12 @@ with tab1:
         # más cambios
         df = df_largo
         df['No. Tienda'] = df['No. Tienda'].str.replace('Tienda', '')
-        df['ID'] = df['No. Tienda'] + df['Código de Barras'].astype(str)
+        df["Código de Barras"] = df["Código de Barras"].astype(int)
+        df["No. Tienda"] = df["No. Tienda"].astype(int)
+        df['ID'] = (
+            df['No. Tienda'].astype(str) + 
+            df['Código de Barras'].astype(str)
+        )
         df.insert(0, 'ID', df.pop('ID'))
         df['No. Tienda'] = df['No. Tienda'].astype(int)
         df['Código de Barras'] = df['Código de Barras'].astype(int)
@@ -283,7 +274,83 @@ with tab2:
 
     # region para procesar los archivos y mostrar el resultado
     if archivos_city:
-        st.success("¡aún no puedo procesar archivos de City Club, pero pronto lo haré! :)")
+        with st.spinner("consolidando archivos..."):
+            lista_dfs2 = []
+
+            for archivo in archivos_city:
+                # leer archivo sin asumir encabezados
+                df_raw = pd.read_excel(archivo, header=None)
+
+                # extraer encabezado general que da la info de la OC
+                proveedor = df_raw.iloc[1, 0]
+                pedido = df_raw.iloc[1, 1]
+                fecha_pedido = df_raw.iloc[1, 2]
+                fecha_inicio = df_raw.iloc[1,3]
+                fecha_fin = df_raw.iloc[1,4]
+                plazo = df_raw.iloc[1,5]
+
+                # encontrar dónde empieza el detalle
+                fila_header = df_raw[
+                    df_raw.iloc[:, 0] == "Num. Prov."
+                ].index[0]
+
+                # leer solo la sección detalle
+                df_detalle = pd.read_excel(
+                    archivo,
+                    skiprows=fila_header
+                )
+
+                # eliminar filas sin código
+                df_detalle = df_detalle.dropna(subset=["Codigo"])
+
+                # agregar columnas del encabezado
+                df_detalle["Número de Proveedor"] = proveedor
+                df_detalle["Número de Pedido"] = pedido
+                df_detalle["Fecha de Pedido"] = fecha_pedido
+                df_detalle["Fecha de Inicio Emb"] = fecha_inicio
+                df_detalle["Fecha de Fin Emb"] = fecha_fin
+                df_detalle["Plazo de pago"] = plazo
+
+                lista_dfs2.append(df_detalle)
+            df_total2 = pd.concat(lista_dfs2, ignore_index=True)
+        
+        # crear ID
+        df_total2["Num. Tienda"] = df_total2["Num. Tienda"].astype(int)
+        df_total2["Codigo"] = df_total2["Codigo"].astype(int)
+
+        df_total2["ID"] = (df_total2["Num. Tienda"].astype(str) +df_total2["Codigo"].astype(str))
+        # mover ID al inicio
+        df_total2.insert(0, "ID", df_total2.pop("ID"))
+
+        df_total2 = df_total2.drop(columns=["Num. Prov.", "Num. Pedido"])
+        df_total2 = df_total2.rename(columns={"Num. Tienda": "No. Tienda", "Codigo": "Código de Barras", "Cant. Pedida": "Total", "Desc.Art.": "Descripción", "Precio Costo": "Costo"})
+
+        cols_fechas = [
+            "Fecha de Pedido",
+            "Fecha de Inicio Emb",
+            "Fecha de Fin Emb"
+        ]
+
+        for col in cols_fechas:
+            df_total2[col] = pd.to_datetime(
+                df_total2[col].astype(str),
+                format="%Y%m%d"
+            ).dt.date
+
+        st.markdown("<h3 style='color:#F7C844;'>vista previa del consolidado:</h3>", unsafe_allow_html=True)
+        st.dataframe(df_total2.head())
+ 
+        from io import BytesIO
+        output2 = BytesIO()
+        df_total2.to_excel(output2, index=False)
+        output2.seek(0)
+
+        st.download_button(
+            label=" descargar ⬇️",
+            data=output2,
+            file_name=f"Tránsito City Club {fecha_bonita}.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
     else:
         st.info("sube al menos un archivo .xlsx para comenzar")
 
@@ -296,16 +363,89 @@ with tab3:
 
     # subir archivos
     archivos_soriana = st.file_uploader("elige tus archivos", type=["xlsx"], accept_multiple_files=True, key="soriana")
-
-    # region para procesar los archivos y mostrar el resultado
     if archivos_soriana:
-        st.success("¡aún no puedo procesar archivos de Soriana, pero pronto lo haré! :)")
+        with st.spinner("consolidando archivos..."):
+                lista_dfs3 = []
+
+                for archivo in archivos_soriana:
+                    # leer archivo sin asumir encabezados
+                    df_raw2 = pd.read_excel(archivo, header=None)
+
+                    # extraer encabezado general que da la info de la OC
+                    proveedor2 = df_raw2.iloc[1, 0]
+                    pedido2 = df_raw2.iloc[1, 1]
+                    fecha_pedido2 = df_raw2.iloc[1, 2]
+                    fecha_inicio2 = df_raw2.iloc[1,3]
+                    fecha_fin2 = df_raw2.iloc[1,4]
+                    plazo2 = df_raw2.iloc[1,5]
+
+                    # encontrar dónde empieza el detalle
+                    fila_header2 = df_raw2[
+                        df_raw2.iloc[:, 0] == "Num. Prov."
+                    ].index[0]
+
+                    # leer solo la sección detalle
+                    df_detalle2 = pd.read_excel(
+                        archivo,
+                        skiprows=fila_header2
+                    )
+
+                    # eliminar filas sin código
+                    df_detalle2 = df_detalle2.dropna(subset=["Codigo"])
+
+                    # agregar columnas del encabezado
+                    df_detalle2["Número de Proveedor"] = proveedor2
+                    df_detalle2["Número de Pedido"] = pedido2
+                    df_detalle2["Fecha de Pedido"] = fecha_pedido2
+                    df_detalle2["Fecha de Inicio Emb"] = fecha_inicio2
+                    df_detalle2["Fecha de Fin Emb"] = fecha_fin2
+                    df_detalle2["Plazo de pago"] = plazo2
+
+                    lista_dfs3.append(df_detalle2)
+                df_total3 = pd.concat(lista_dfs3, ignore_index=True)
+            
+                # crear ID
+                df_total3["Num. Tienda"] = df_total3["Num. Tienda"].astype(int)
+                df_total3["Codigo"] = df_total3["Codigo"].astype(int)
+
+                df_total3["ID"] = (df_total3["Num. Tienda"].astype(str) +df_total3["Codigo"].astype(str))
+                # mover ID al inicio
+                df_total3.insert(0, "ID", df_total3.pop("ID"))
+
+                df_total3 = df_total3.drop(columns=["Num. Prov.", "Num. Pedido"])
+                df_total3 = df_total3.rename(columns={"Num. Tienda": "No. Tienda", "Codigo": "Código de Barras", "Cant. Pedida": "Total", "Desc.Art.": "Descripción", "Precio Costo": "Costo"})
+
+                cols_fechas = [
+                    "Fecha de Pedido",
+                    "Fecha de Inicio Emb",
+                    "Fecha de Fin Emb"
+                ]
+                
+                for col in cols_fechas:
+                    df_total3[col] = pd.to_datetime(
+                        df_total3[col].astype(str),
+                        format="%Y%m%d"
+                    ).dt.date
+
+                st.markdown("<h3 style='color:#F7C844;'>vista previa del consolidado:</h3>", unsafe_allow_html=True)
+                st.dataframe(df_total3.head())
+        
+                from io import BytesIO
+                output3 = BytesIO()
+                df_total3.to_excel(output3, index=False)
+                output3.seek(0)
+
+                st.download_button(
+                    label=" descargar ⬇️",
+                    data=output3,
+                    file_name=f"Tránsito Soriana {fecha_bonita}.xlsx",
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                )
     else:
         st.info("sube al menos un archivo .xlsx para comenzar")
 
 # descripción breve
 st.write("sube aquí los archivos de OC .xlsx con el mismo formato y obtén un solo archivo consolidado")
-
 
 
 # footer visible
