@@ -270,7 +270,7 @@ with tab2:
     )
 
     # subir archivos
-    archivos_city = st.file_uploader("elige tus archivos", type=["xlsx"], accept_multiple_files=True, key="city")
+    archivos_city = st.file_uploader("elige tus archivos", type=["xls"], accept_multiple_files=True, key="city")
 
     # region para procesar los archivos y mostrar el resultado
     if archivos_city:
@@ -362,7 +362,7 @@ with tab3:
     )
 
     # subir archivos
-    archivos_soriana = st.file_uploader("elige tus archivos", type=["xlsx"], accept_multiple_files=True, key="soriana")
+    archivos_soriana = st.file_uploader("elige tus archivos", type=["xls"], accept_multiple_files=True, key="soriana")
     if archivos_soriana:
         with st.spinner("consolidando archivos..."):
                 lista_dfs3 = []
