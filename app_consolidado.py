@@ -279,7 +279,7 @@ with tab2:
 
             for archivo in archivos_city:
                 # leer archivo sin asumir encabezados
-                df_raw = pd.read_excel(archivo, header=None)
+                df_raw = pd.read_excel(archivo, header=None, engine="xlrd")
 
                 # extraer encabezado general que da la info de la OC
                 proveedor = df_raw.iloc[1, 0]
@@ -369,7 +369,7 @@ with tab3:
 
                 for archivo in archivos_soriana:
                     # leer archivo sin asumir encabezados
-                    df_raw2 = pd.read_excel(archivo, header=None)
+                    df_raw2 = pd.read_excel(archivo, header=None, engine="xlrd")
 
                     # extraer encabezado general que da la info de la OC
                     proveedor2 = df_raw2.iloc[1, 0]
