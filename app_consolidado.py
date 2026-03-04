@@ -332,6 +332,9 @@ with tab2:
         # crear ID
         df_total2["Num. Tienda"] = df_total2["Num. Tienda"].astype(int)
         df_total2["Codigo"] = df_total2["Codigo"].astype(int)
+        df_total2["Total"] = df_total2["Total"].astype(int)
+        df_total2["Costo"] = df_total2["Costo"].astype(int)
+        df_total2["Cap. Emp"] = df_total2["Cap. Emp."].astype(int)
 
         df_total2["ID"] = (df_total2["Num. Tienda"].astype(str) +df_total2["Codigo"].astype(str))
         # mover ID al inicio
