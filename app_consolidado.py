@@ -3,6 +3,7 @@ import streamlit as st
 import pandas as pd
 import io
 from datetime import datetime
+from lxml import etree
 
 st.set_page_config(layout="wide")
 
@@ -279,7 +280,25 @@ with tab2:
 
             for archivo in archivos_city:
                 # leer archivo sin asumir encabezados
-                df_raw = pd.read_excel(archivo, header=None, engine="xlrd")
+                tree = etree.parse(archivo)
+                root = tree.getroot()
+
+                # namespace del excel 2003
+                ns = {"ss": "urn:schemas-microsoft-com:office:spreadsheet"}
+
+                rows = []
+
+                for row in root.xpath(".//ss:Row", namespaces=ns):
+                    cells = []
+                    for cell in row.xpath(".//ss:Cell", namespaces=ns):
+                        data = cell.xpath(".//ss:Data", namespaces=ns)
+                        if data:
+                            cells.append(data[0].text)
+                        else:
+                            cells.append(None)
+                    rows.append(cells)
+
+                df_raw = pd.DataFrame(rows)
 
                 # extraer encabezado general que da la info de la OC
                 proveedor = df_raw.iloc[1, 0]
@@ -295,13 +314,9 @@ with tab2:
                 ].index[0]
 
                 # leer solo la sección detalle
-                df_detalle = pd.read_excel(
-                    archivo,
-                    skiprows=fila_header
-                )
-
-                # eliminar filas sin código
-                df_detalle = df_detalle.dropna(subset=["Codigo"])
+                df_detalle = df_raw.iloc[3:].reset_index(drop=True)
+                df_detalle.columns = df_detalle.iloc[0]
+                df_detalle = df_detalle[1:].reset_index(drop=True)
 
                 # agregar columnas del encabezado
                 df_detalle["Número de Proveedor"] = proveedor
@@ -369,7 +384,24 @@ with tab3:
 
                 for archivo in archivos_soriana:
                     # leer archivo sin asumir encabezados
-                    df_raw2 = pd.read_excel(archivo, header=None, engine="xlrd")
+                    tree2 = etree.parse(archivo)
+                    root2 = tree2.getroot()
+
+                    # namespace del excel 2003
+                    ns2 = {"ss": "urn:schemas-microsoft-com:office:spreadsheet"}
+
+                    rows2 = []
+
+                    for row in root2.xpath(".//ss:Row", namespaces=ns2):
+                        cells2 = []
+                        for cell in row.xpath(".//ss:Cell", namespaces=ns2):
+                            data = cell.xpath(".//ss:Data", namespaces=ns2)
+                            if data:
+                                cells2.append(data[0].text)
+                            else:
+                                cells2.append(None)
+                        rows2.append(cells2)
+                    df_raw2 = pd.DataFrame(rows)
 
                     # extraer encabezado general que da la info de la OC
                     proveedor2 = df_raw2.iloc[1, 0]
@@ -385,10 +417,9 @@ with tab3:
                     ].index[0]
 
                     # leer solo la sección detalle
-                    df_detalle2 = pd.read_excel(
-                        archivo,
-                        skiprows=fila_header2
-                    )
+                    df_detalle2 = df_raw2.iloc[3:].reset_index(drop=True)
+                    df_detalle2.columns = df_detalle2.iloc[0]
+                    df_detalle2 = df_detalle2[1:].reset_index(drop=True)
 
                     # eliminar filas sin código
                     df_detalle2 = df_detalle2.dropna(subset=["Codigo"])
