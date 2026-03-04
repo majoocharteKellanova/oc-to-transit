@@ -2,4 +2,4 @@ streamlit
 pandas
 openpyxl
 datetime
-xlrd
+xlrd==1.2.0
