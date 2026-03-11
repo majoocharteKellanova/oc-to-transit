@@ -332,7 +332,6 @@ with tab2:
         # crear ID
         df_total2["Num. Tienda"] = df_total2["Num. Tienda"].astype(int)
         df_total2["Codigo"] = df_total2["Codigo"].astype(int)
-        df_total2["Total"] = df_total2["Total"].astype(int)
         df_total2["Costo"] = df_total2["Costo"].astype(int)
         df_total2["Cap. Emp"] = df_total2["Cap. Emp."].astype(int)
 
@@ -370,7 +369,7 @@ with tab2:
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
     else:
-        st.info("sube al menos un archivo .xlsx para comenzar")
+        st.info("sube al menos un archivo .xls para comenzar")
 
 # tab 3 - soriana
 with tab3:
