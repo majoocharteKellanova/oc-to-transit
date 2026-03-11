@@ -328,12 +328,11 @@ with tab2:
 
                 lista_dfs2.append(df_detalle)
             df_total2 = pd.concat(lista_dfs2, ignore_index=True)
-        
+
+        df_total2.head()
         # crear ID
         df_total2["Num. Tienda"] = df_total2["Num. Tienda"].astype(int)
-        df_total2["Codigo"] = df_total2["Codigo"].astype(int)
-        df_total2["Costo"] = df_total2["Costo"].astype(int)
-        df_total2["Cap. Emp"] = df_total2["Cap. Emp."].astype(int)
+
 
         df_total2["ID"] = (df_total2["Num. Tienda"].astype(str) +df_total2["Codigo"].astype(str))
         # mover ID al inicio
